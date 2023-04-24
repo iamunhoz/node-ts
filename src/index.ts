@@ -1,8 +1,12 @@
 import express from 'express';
+import os from 'os';
 import { getPersonRepository } from './database/person';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const host: { ip: string; port: number } =
+  os.hostname() === 'krafter' ?
+  { ip: '127.0.1', port: 3000 } :
+  { ip: '0.0.0.0', port: process.env.PORT };
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -36,6 +40,6 @@ app.get('/create-user', async (req, res) => {
   res.send({ fetchedPerson });
 });
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(host.port, host.ip, () => {
+  console.log(`Server listening on port ${host.port}`);
 });
