@@ -1,8 +1,12 @@
 import express from 'express';
 import os from 'os';
+import cors from 'cors';
 import { startRedisServer } from './database';
 
 const app = express();
+
+app.use(cors());
+
 const host: { ip: string; port: number } =
   os.hostname() === 'krafter' ?
   { ip: '127.0.1', port: 3000 } :
