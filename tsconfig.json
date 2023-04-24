@@ -4,7 +4,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "outDir": "dist",
     "paths": { "~/*": ["./src/*"] },
     "target": "ESNext"
