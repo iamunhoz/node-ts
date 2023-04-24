@@ -7,6 +7,9 @@ dependencies:
   express:
     specifier: ^4.18.2
     version: 4.18.2
+  redis:
+    specifier: ^4.6.5
+    version: 4.6.5
   redis-om:
     specifier: ^0.3.6
     version: 0.3.6
