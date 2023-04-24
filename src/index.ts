@@ -16,6 +16,10 @@ app.get('/check-status', (_, res) => {
   res.send('server is on');
 });
 
+app.get('/check-env', (_, res) => {
+  res.send(process.env);
+});
+
 app.get('/create-user', async (req, res) => {
   const personRepository = await getPersonRepository();
 
