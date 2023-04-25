@@ -1,30 +1,27 @@
-import { startRedisServer } from "./database"
+import { host } from "./consts"
 import cors from "cors"
 import express from "express"
-import os from "os"
+import { createUser } from './database';
 
 const app = express()
 
 app.use(cors())
 
-const host: { ip: string; port: number } =
-	os.hostname() === "krafter"
-		? { ip: "127.0.1", port: 3000 }
-		: { ip: "0.0.0.0", port: process.env.PORT }
-
-const redisController = startRedisServer()
-
 app.get("/", (req, res) => {
 	res.send("Hello World")
 })
 
-app.get("/add-new-value/", async (req, res) => {
-	await redisController.connect()
+app.get("/create-new-user/", async (req, res) => {
+	const { name, password } = req.query as { name: string; password: string }
 
-	await redisController.set(req.query.key as string, req.query.value as string)
+	if (!name || !password) {
+		res.status(400).send('name and/or password are missing')
+		return;
+	}
 
-	const value = await redisController.get(req.query.key as string)
-	res.send(`new value created in db: ${value}`)
+	const response = await createUser({ name, password })
+
+	res.status(200).json(response)
 })
 
 app.listen(host.port, host.ip, () => {

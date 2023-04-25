@@ -9,6 +9,7 @@ name String
 **install** @prisma/client
 **run** npx prisma generate
 **create** script file
+
 **create** async function in script file to connect to db (at 11:00)
 
 _tutorial link_

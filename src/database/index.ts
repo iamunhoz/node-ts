@@ -1,27 +1,11 @@
-import { createClient } from 'redis';
+import { PrismaClient, User } from "@prisma/client"
 
-const { REDISUSER, REDISPASSWORD, REDISHOST, REDISPORT } = process.env
+const prisma = new PrismaClient()
 
-const REDIS_RAILWAIL_SERVER_URL = `redis://${REDISUSER}:${REDISPASSWORD}@${REDISHOST}:${REDISPORT}`
+export async function createUser(data: Omit<User, 'id'>): Promise<User> {
+	const response = await prisma.user.create({ data })
 
-export const startRedisServer = () => {
-  const client = createClient({
-    //redis[s]://[[username][:password]@][host][:port][/db-number]
-    url: REDIS_RAILWAIL_SERVER_URL//'redis://localhost:6379',
-  });
+	await prisma.$disconnect()
 
-  client.on('error', (err) => console.log('Redis Client Error', err));
-  // client.on('')
-
-  return client;
-};
-
-/**
- * await client.connect();
-
-  await client.set('first_object', 777);
-  const pattern = '*';
-  const serverKeys = await client.keys(pattern);
-
-  console.log('serverKeys', serverKeys);
- */
+	return response
+}
