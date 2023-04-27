@@ -1,0 +1,28 @@
+@host = http://localhost:3000
+@authToken = Bearer {{login.response.body.apiMessage.accessToken}}
+
+
+GET {{host}}/user
+Authorization: {{authToken}}
+
+###
+# create new user
+POST  {{host}}/user
+Content-Type: application/json
+
+{
+  "name": "rest.client",
+  "email": "rest2@client.com",
+  "password": "123mudar"
+}
+
+###
+# @name login
+POST {{host}}/user/login
+Content-Type: application/json
+
+{
+  "email": "rest@client.com",
+  "password": "123mudar"
+}
+

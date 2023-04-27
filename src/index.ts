@@ -1,21 +1,34 @@
 import { host } from "./consts"
 import cors from "cors"
 import express from "express"
-import { countUsers, createNewUser, deleteUser, getAllUsers, updateUser } from './requests/users';
+import {
+	countUsers,
+	createNewUser,
+	deleteUser,
+	getAllUsers,
+	updateUser,
+	loginUser,
+	authenticateToken,
+	refreshToken
+} from './requests/users';
 
 const app = express()
 app.use(express.json());
 app.use(cors())
 
 app.get("/", (req, res) => {
-	res.json(['users','create-new-user', 'check-user-count'])
+	res.json(['user'])
 })
 
-app.get("/users", getAllUsers)
-app.get('/check-user-count/', countUsers)
-app.post("/create-new-user/", createNewUser)
-app.delete("/delete-user/", deleteUser)
-app.put("/update-user/", updateUser)
+app.get("/user", authenticateToken, getAllUsers)
+app.get('/user/count', authenticateToken, countUsers)
+app.post("/user/", createNewUser)
+
+// todo - não expor diretamente
+app.delete("/user/", authenticateToken, deleteUser)
+app.put("/user/", authenticateToken, updateUser)
+app.post("/user/login", loginUser)
+app.post("/user/token", refreshToken)
 
 
 app.listen(host.port, host.ip, () => {

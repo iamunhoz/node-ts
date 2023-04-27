@@ -72,22 +72,41 @@ export async function putUser(data: Partial<User>): Promise<User | DBerror> {
 }
 
 export async function getUsers(): Promise<User[] | DBerror> {
-try {
-	const response = await prismaClient.user.findMany()
+	try {
+		const response = await prismaClient.user.findMany()
 
-	return response
-} catch (error) {
-	console.log(
-		'postgresql db returned the following error:',
-		(error as PrismaClientUnknownRequestError).message
-	)
+		return response
+	} catch (error) {
+		console.log(
+			'postgresql db returned the following error:',
+			(error as PrismaClientUnknownRequestError).message
+		)
 
-	return {
-		erro: (error as PrismaClientUnknownRequestError).message
+		return {
+			erro: (error as PrismaClientUnknownRequestError).message
+		}
 	}
 }
-}
 
+
+export async function getUserByEmail(data: { email: string }) {
+	const { email }	= data;
+	try {
+		const response = await prismaClient.user.findUnique({ where: { email }})
+
+		return response
+	} catch (error) {
+		console.log(
+			'postgresql db returned the following error:',
+			(error as PrismaClientUnknownRequestError).message
+		)
+
+		return {
+			erro: (error as PrismaClientUnknownRequestError).message
+		}
+	}
+
+}
 
 export async function checkUserCount(): Promise<number> {
 	const response = await prismaClient.user.count({})
