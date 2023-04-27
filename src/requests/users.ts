@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { getUsers, createUser, checkUserCount, removeUser, putUser, getUserByEmail } from '../database';
 import { failResponse, successResponse } from '../api';
 import { User } from '@prisma/client';
-import HttpStatusCode from '~/consts/HttpStatusCode';
+import HttpStatusCode from '../consts/HttpStatusCode';
 
 // todo
 // criar user admin e rotinas relacionadas

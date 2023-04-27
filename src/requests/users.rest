@@ -1,4 +1,5 @@
-@host = http://localhost:3000
+# @host = http://localhost:3000
+@host = https://server-production-f58d.up.railway.app
 @authToken = Bearer {{login.response.body.apiMessage.accessToken}}
 
 
