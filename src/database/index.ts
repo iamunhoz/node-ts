@@ -1,6 +1,14 @@
 import { PrismaClient, User } from "@prisma/client"
 
-const prisma = new PrismaClient()
+console.log('process.env', process.env)
+
+const prisma = new PrismaClient({
+	datasources: {
+		db: {
+			url: process.env.DATABASE_URL
+		}
+	}
+})
 
 export async function createUser(data: Omit<User, 'id'>): Promise<User> {
 	const response = await prisma.user.create({ data })
@@ -9,3 +17,9 @@ export async function createUser(data: Omit<User, 'id'>): Promise<User> {
 
 	return response
 }
+
+export async function checkUserCount(): Promise<number> {
+	const response = await prisma.user.count({})
+
+	return response
+};
