@@ -2,21 +2,6 @@
 @host = https://server-production-f58d.up.railway.app
 @authToken = Bearer {{login.response.body.apiMessage.accessToken}}
 
-
-GET {{host}}/user
-Authorization: {{authToken}}
-
-###
-# create new user
-POST  {{host}}/user
-Content-Type: application/json
-
-{
-  "name": "rest.client",
-  "email": "rest2@client.com",
-  "password": "123mudar"
-}
-
 ###
 # @name login
 POST {{host}}/user/login
@@ -27,3 +12,36 @@ Content-Type: application/json
   "password": "123mudar"
 }
 
+### get all users
+GET {{host}}/user
+Authorization: {{authToken}}
+
+###
+# create new user
+POST  {{host}}/user
+Content-Type: application/json
+
+{
+  "name": "rest.client.2024",
+  "email": "rest2024@client.com",
+  "password": "123mudar"
+}
+
+### remove user
+DELETE {{host}}/user
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": "7"
+}
+
+### update user
+PUT {{host}}/user
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": "9",
+  "name": "user renamed by put request"
+}
