@@ -1,45 +1,49 @@
+import { prismaClient } from "../api"
 import { User } from "@prisma/client"
-import { PrismaClientUnknownRequestError } from '@prisma/client/runtime';
-import { prismaClient } from '../api';
+import { PrismaClientUnknownRequestError } from "@prisma/client/runtime"
 
 type DBerror = {
-	erro: string;
+	erro: string
 }
 
-export async function createUser(data: Omit<User, 'id'>): Promise<User | DBerror> {
+export async function createUser(
+	data: Omit<User, "id">,
+): Promise<User | DBerror> {
 	try {
 		const response = await prismaClient.user.create({ data })
 		return response
 	} catch (error) {
 		console.log(
-			'postgresql db returned the following error:',
-			(error as PrismaClientUnknownRequestError).message
+			"postgresql db returned the following error:",
+			(error as PrismaClientUnknownRequestError).message,
 		)
 
 		return {
-			erro: (error as PrismaClientUnknownRequestError).message
+			erro: (error as PrismaClientUnknownRequestError).message,
 		}
 	} finally {
 		await prismaClient.$disconnect()
 	}
 }
 
-export async function removeUser(data: { id: number }): Promise<User | DBerror> {
+export async function removeUser(data: { id: string }): Promise<
+	User | DBerror
+> {
 	try {
 		const response = await prismaClient.user.delete({
 			where: {
-				id: data.id
-			}
+				id: data.id,
+			},
 		})
 		return response
 	} catch (error) {
 		console.log(
-			'postgresql db returned the following error:',
-			(error as PrismaClientUnknownRequestError).message
+			"postgresql db returned the following error:",
+			(error as PrismaClientUnknownRequestError).message,
 		)
 
 		return {
-			erro: (error as PrismaClientUnknownRequestError).message
+			erro: (error as PrismaClientUnknownRequestError).message,
 		}
 	} finally {
 		await prismaClient.$disconnect()
@@ -59,12 +63,12 @@ export async function putUser(data: Partial<User>): Promise<User | DBerror> {
 		return response
 	} catch (error) {
 		console.log(
-			'postgresql db returned the following error:',
-			(error as PrismaClientUnknownRequestError).message
+			"postgresql db returned the following error:",
+			(error as PrismaClientUnknownRequestError).message,
 		)
 
 		return {
-			erro: (error as PrismaClientUnknownRequestError).message
+			erro: (error as PrismaClientUnknownRequestError).message,
 		}
 	} finally {
 		await prismaClient.$disconnect()
@@ -78,38 +82,36 @@ export async function getUsers(): Promise<User[] | DBerror> {
 		return response
 	} catch (error) {
 		console.log(
-			'postgresql db returned the following error:',
-			(error as PrismaClientUnknownRequestError).message
+			"postgresql db returned the following error:",
+			(error as PrismaClientUnknownRequestError).message,
 		)
 
 		return {
-			erro: (error as PrismaClientUnknownRequestError).message
+			erro: (error as PrismaClientUnknownRequestError).message,
 		}
 	}
 }
 
-
 export async function getUserByEmail(data: { email: string }) {
-	const { email }	= data;
+	const { email } = data
 	try {
-		const response = await prismaClient.user.findUnique({ where: { email }})
+		const response = await prismaClient.user.findUnique({ where: { email } })
 
 		return response
 	} catch (error) {
 		console.log(
-			'postgresql db returned the following error:',
-			(error as PrismaClientUnknownRequestError).message
+			"postgresql db returned the following error:",
+			(error as PrismaClientUnknownRequestError).message,
 		)
 
 		return {
-			erro: (error as PrismaClientUnknownRequestError).message
+			erro: (error as PrismaClientUnknownRequestError).message,
 		}
 	}
-
 }
 
 export async function checkUserCount(): Promise<number> {
 	const response = await prismaClient.user.count({})
 
 	return response
-};
+}
