@@ -3,12 +3,9 @@ import { prismaClient } from "../api"
 
 export * from "./users"
 
-export async function dbActionTemplate<T>(
-  asyncAtion: (args) => Promise<T>,
-  ...args
-) {
+export async function dbActionTemplate<T>(asyncAtion: () => Promise<T>) {
   try {
-    const response = await asyncAtion(args)
+    const response = await asyncAtion()
 
     return response
   } catch (error) {

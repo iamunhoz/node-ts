@@ -1,5 +1,5 @@
 # @host = http://localhost:3000
-@host = https://server-production-f58d.up.railway.app
+@host = https://tree-simple-server.up.railway.app
 @authToken = Bearer {{login.response.body.apiMessage.accessToken}}
 
 ###
