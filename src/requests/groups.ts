@@ -1,6 +1,5 @@
 import { RequestHandler } from "express"
-import { failResponse, successResponse } from "../api"
-import HttpStatusCode from "../consts/HttpStatusCode"
+import { handleQueryResponse, validateQueryParams } from "../api"
 import {
   createGroup,
   getGroups,
@@ -13,14 +12,7 @@ import {
 export const getAllGroups: RequestHandler = async (req, res) => {
   const response = await getGroups()
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const createNewGroup: RequestHandler = async (req, res) => {
@@ -29,92 +21,43 @@ export const createNewGroup: RequestHandler = async (req, res) => {
   // @ts-ignore (descobrir depois qual o jutsu pra tipar req.user)
   const response = await createGroup({ userId: req.user.id, name })
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const getGroupById: RequestHandler = async (req, res) => {
-  const { id } = req.body
-
-  if (!id) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("missing id")
-    return
-  }
+  const { id } = validateQueryParams<{ id: number }>(req, res, ["id"])
 
   const response = await queryGetGroupById({ id })
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const deleteGroupById: RequestHandler = async (req, res) => {
-  const { id } = req.body
-
-  if (!id) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("missing id")
-    return
-  }
+  const { id } = validateQueryParams<{ id: number }>(req, res, ["id"])
 
   const response = await removeGroup({ id })
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const removeMemberFromGroup: RequestHandler = async (req, res) => {
-  const { memberId, groupId } = req.body
-
-  if (!memberId || !groupId) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("missing id")
-    return
-  }
+  const { memberId, groupId } = validateQueryParams<{
+    memberId: number
+    groupId: number
+  }>(req, res, ["groupId", "memberId"])
 
   const response = await queryRemoveMemberFromGroup({ memberId, groupId })
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const addMemberToGroup: RequestHandler = async (req, res) => {
-  const { memberId, groupId } = req.body
-
-  if (!memberId || !groupId) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("missing id")
-    return
-  }
+  const { memberId, groupId } = validateQueryParams<{
+    memberId: number
+    groupId: number
+  }>(req, res, ["groupId", "memberId"])
 
   const response = await queryAddMemberToGroup({ memberId, groupId })
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }

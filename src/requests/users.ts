@@ -2,7 +2,12 @@ import { User } from "@prisma/client"
 import bcrypt from "bcrypt"
 import { RequestHandler } from "express"
 import jwt from "jsonwebtoken"
-import { failResponse, successResponse } from "../api"
+import {
+  failResponse,
+  handleQueryResponse,
+  successResponse,
+  validateQueryParams,
+} from "../api"
 import HttpStatusCode from "../consts/HttpStatusCode"
 import {
   checkUserCount,
@@ -19,14 +24,7 @@ import {
 export const getAllUsers: RequestHandler = async (req, res) => {
   const response = await getUsers()
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const createNewUser: RequestHandler = async (req, res) => {
@@ -49,61 +47,37 @@ export const createNewUser: RequestHandler = async (req, res) => {
     groupId,
   })
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const updateUser: RequestHandler = async (req, res) => {
-  if (!req.body.id) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("user id missing")
-    return
-  }
+  validateQueryParams<{ id: number }>(req, res, ["id"])
 
   const response = await putUser(req.body)
 
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const deleteUser: RequestHandler = async (req, res) => {
-  const { id } = req.body
+  const { id } = validateQueryParams<{ id: number }>(req, res, ["id"])
 
-  if (!id) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("user id missing")
-    return
-  }
+  const response = await removeUser({ id: String(id) })
 
-  const response = await removeUser({ id })
-
-  if ("erro" in response) {
-    res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
-    return
-  }
-
-  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+  handleQueryResponse(response, res)
 }
 
 export const loginUser: RequestHandler = async (req, res) => {
-  const { email, password } = req.body
+  /* const { email, password } = req.body
 
   if (!email || !password) {
     res.status(HttpStatusCode.BAD_REQUEST).send("email or password are missing")
     return
-  }
+  } */
+
+  const { email, password } = validateQueryParams<{
+    email: string
+    password: string
+  }>(req, res, ["email", "password"])
 
   const response = await getUserByEmail({ email })
 
@@ -127,7 +101,6 @@ export const loginUser: RequestHandler = async (req, res) => {
   }
   try {
     const bcryptResponse = await bcrypt.compare(password, response.password)
-    console.log({ bcryptResponse })
 
     if (bcryptResponse) {
       const accessToken = generateAccessToken(response)

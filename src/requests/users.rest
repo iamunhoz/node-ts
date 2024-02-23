@@ -22,8 +22,8 @@ POST  {{host}}/user
 Content-Type: application/json
 
 {
-  "name": "user-with-group-2",
-  "email": "user-with-group2@test.com",
+  "name": "user3",
+  "email": "user3@test.com",
   "password": "123mudar",
   "role": "student"
 }
@@ -34,7 +34,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id": "7"
+  "id": "d8b2bb3a-bb88-4ef9-97c7-b9e67c462f04"
 }
 
 ### update user
@@ -43,7 +43,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id": "9",
+  "id": "49ab9b24-93f5-424f-a335-c55e4d5eb4c1",
   "name": "user renamed by put request"
 }
 
@@ -57,7 +57,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id": 2
+  "id": 6
 }
 
 ### create new group for the logged user
@@ -76,7 +76,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "id": 2
+  "id": 11
 }
 
 ### remove people from group
@@ -95,8 +95,8 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "groupId": 4,
-  "memberId": "d8b2bb3a-bb88-4ef9-97c7-b9e67c462f04"
+  "groupId": 10,
+  "memberId": "49ab9b24-93f5-424f-a335-c55e4d5eb4c1"
 }
 
 ### add
