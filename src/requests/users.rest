@@ -1,7 +1,6 @@
 @host = http://localhost:3003
 # @host = https://tree-simple-server.up.railway.app
 @authToken = Bearer {{login.response.body.apiMessage.accessToken}}
-@id = 396dc9dd-9616-49e1-9dbf-28415d59d357
 
 ###
 # @name login
@@ -52,12 +51,42 @@ Authorization: {{authToken}}
 GET {{host}}/group
 Authorization: {{authToken}}
 
-### create new group
+### create new group for the logged user
 POST  {{host}}/group
 Content-Type: application/json
 Authorization: {{authToken}}
 
 {
- "userId": "{{id}}",
- "name": "this is a group test 2"
+ "name": "this is a group test with req.user.id"
 }
+
+
+### remove group
+DELETE {{host}}/group
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": 2
+}
+
+### remove people from group
+DELETE {{host}}/group/member
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "groupId": 4,
+  "memberId": "396dc9dd-9616-49e1-9dbf-28415d59d357"
+}
+
+### add people to group
+POST {{host}}/group/member
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "groupId": 4,
+  "memberId": "d8b2bb3a-bb88-4ef9-97c7-b9e67c462f04"
+}
+

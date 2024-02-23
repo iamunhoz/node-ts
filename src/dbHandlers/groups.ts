@@ -56,3 +56,45 @@ export async function getGroups(): Promise<Group[] | DBerror> {
 export async function checkGroupCount(): Promise<number | DBerror> {
   return dbActionTemplate(() => prismaClient.group.count({}))
 }
+
+export async function queryRemoveMemberFromGroup({
+  memberId,
+  groupId,
+}: {
+  memberId: number
+  groupId: number
+}) {
+  return dbActionTemplate(() =>
+    prismaClient.group.update({
+      where: {
+        id: groupId,
+      },
+      data: {
+        members: {
+          disconnect: [{ id: memberId.toString() }],
+        },
+      },
+    })
+  )
+}
+
+export async function queryAddMemberToGroup({
+  memberId,
+  groupId,
+}: {
+  memberId: number
+  groupId: number
+}) {
+  return dbActionTemplate(() =>
+    prismaClient.group.update({
+      where: {
+        id: groupId,
+      },
+      data: {
+        members: {
+          connect: [{ id: memberId.toString() }],
+        },
+      },
+    })
+  )
+}

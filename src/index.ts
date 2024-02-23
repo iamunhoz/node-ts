@@ -1,7 +1,13 @@
 import cors from "cors"
 import express from "express"
 import { host } from "./consts"
-import { createNewGroup, getAllGroups } from "./requests/groups"
+import {
+  addMemberToGroup,
+  createNewGroup,
+  deleteGroupById,
+  getAllGroups,
+  removeMemberFromGroup,
+} from "./requests/groups"
 import {
   authenticateToken,
   countUsers,
@@ -40,9 +46,10 @@ app.post("/user/token", refreshToken)
 // groups
 app.get("/group", authenticateToken, getAllGroups)
 app.post("/group", authenticateToken, createNewGroup)
+app.delete("/group", authenticateToken, deleteGroupById)
 // app.get("/group/:id", authenticateToken, getGroupById)
-// app.delete("/group/:id", authenticateToken, deleteGroupById)
-// app.put("/group/:id", authenticateToken, putGroupById) // add/remove/edit people here
+app.delete("/group/member", authenticateToken, removeMemberFromGroup)
+app.post("/group/member", authenticateToken, addMemberToGroup)
 
 app.listen(host.port, host.ip, () => {
   console.log(`Server listening on port ${host.port}`)
