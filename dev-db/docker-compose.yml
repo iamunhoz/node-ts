@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  # app:
+  #   image: node:14 # Or whichever image/version your app uses
+  #   volumes:
+  #     - .:/app
+  #   working_dir: /app
+  #   command: npm start # Or your start command
+  #   ports:
+  #     - "3333:3333"
+  #   environment:
+  #     DATABASE_URL: postgresql://postgres:password@localhost:3333/tree-simple
+  #   depends_on:
+  #     - db
+
+  db:
+    image: postgres:13 # Or whichever version you prefer
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tree-simple
+    ports:
+      - "3333:5432" # Optional: Expose PostgreSQL port (remove if not needed)
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

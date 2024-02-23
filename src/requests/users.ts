@@ -11,7 +11,7 @@ import {
   getUsers,
   putUser,
   removeUser,
-} from "../database"
+} from "../dbHandlers"
 
 // todo
 // criar user admin e rotinas relacionadas
@@ -30,7 +30,7 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 }
 
 export const createNewUser: RequestHandler = async (req, res) => {
-  const { name, password, email } = req.body
+  const { name, password, email, role = "student", groupId } = req.body
 
   if (!name || !password || !email) {
     res
@@ -45,6 +45,8 @@ export const createNewUser: RequestHandler = async (req, res) => {
     name,
     password: hashedPassword,
     email,
+    role,
+    groupId,
   })
 
   if ("erro" in response) {
@@ -124,7 +126,10 @@ export const loginUser: RequestHandler = async (req, res) => {
     return
   }
   try {
-    if (await bcrypt.compare(password, response.password)) {
+    const bcryptResponse = await bcrypt.compare(password, response.password)
+    console.log({ bcryptResponse })
+
+    if (bcryptResponse) {
       const accessToken = generateAccessToken(response)
       const refreshToken = generateRefreshToken(response)
 

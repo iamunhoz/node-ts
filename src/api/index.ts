@@ -1,32 +1,36 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client"
 
 export const prismaClient = new PrismaClient({
-	datasources: {
-		db: {
-			url: process.env.DATABASE_URL
-		}
-	}
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+    },
+  },
 })
 
 type Args<T> = {
-  apiBody: T;
+  apiBody: T
 }
 
 type ResponseBody<T> = {
-  status: 'sucesso' | 'erro' | 'cuidado';
+  status: "sucesso" | "erro" | "cuidado"
   apiMessage: T
 }
 
-export function successResponse<T>(args: Args<T>):ResponseBody<T> {
+export function successResponse<T>(args: Args<T>): ResponseBody<T> {
   return {
-    status: 'sucesso',
-    apiMessage: args.apiBody
+    status: "sucesso",
+    apiMessage: args.apiBody,
   }
 }
 
-export function failResponse<T>(args: Args<T>):ResponseBody<T> {
+export function failResponse<T>(args: Args<T>): ResponseBody<T> {
   return {
-    status: 'erro',
-    apiMessage: args.apiBody
+    status: "erro",
+    apiMessage: args.apiBody,
   }
+}
+
+export type DBerror = {
+  erro: string
 }

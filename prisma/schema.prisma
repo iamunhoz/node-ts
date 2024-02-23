@@ -10,33 +10,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  password String
-  sentences Sentence[]
+enum UserRole {
+  student
+  teacher
 }
 
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  password  String
+  sentences Sentence[]
+  role      UserRole @default(student)
+  Group     Group[]
+}
+
+model Group {
+  id      Int    @id @default(autoincrement())
+  name    String
+  members User[] // Groups can have multiple students
+}
+
+
 model Sentence {
-  id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  fullSentence String
+  id      String   @id @default(uuid())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  // fullSentence String
+
+  //
   phrases Phrase[]
 }
 
 model Phrase {
-  id String @id @default(uuid())
-  sentence Sentence @relation(fields: [sentenceId], references: [id])
-  sentenceId String
-  body String
-  head String?
-  phraseType PhraseType
-  parentPhraseId String?
-  leftChildPhraseId String?
-  rightChildPhraseId String?
-  extraInfo Json?
+  id             String     @id @default(uuid())
+  // isso não vai pro db. isso é usado para gerar ts types.
+  // fields deve referencia uma id desse model, e references deve referencia uma id externa (foreign)
+  sentence       Sentence   @relation(fields: [sentenceId], references: [id])
+  // isso sim é usado para gerar a foreign key constraint
+  sentenceId     String
+  body           String
+  phraseType     PhraseType
+  parentPhraseId String
+  // head String?
+  // leftChildPhraseId String?
+  // rightChildPhraseId String?
+  // extraInfo Json?
 }
 
 enum PhraseType {
@@ -49,3 +68,46 @@ enum PhraseType {
   AdverbP
   undefined
 }
+
+
+// schema.prisma
+
+// Define the Students table
+// model Student {
+//   id        Int      @id @default(autoincrement())
+//   name      String
+//   teachers  Teacher[] // Students can have multiple teachers
+//   groups    Group[]   // Students can belong to multiple groups
+//   assignments Assignment[] // Students can have multiple assignments
+// }
+//
+// // Define the Teachers table
+// model Teacher {
+//   id          Int         @id @default(autoincrement())
+//   name        String
+//   students    Student[]   // Teachers can have multiple students
+//   groups      Group[]     // Teachers can have multiple groups
+//   assignments Assignment[] // Teachers can have multiple assignments
+// }
+//
+// // Define the Groups table
+// model Group {
+//   id          Int        @id @default(autoincrement())
+//   name        String
+//   students    Student[]  // Groups can have multiple students
+//   teachers    Teacher[]  // Groups can have multiple teachers
+// }
+//
+// // Define the Assignments table
+// model Assignment {
+//   id        Int       @id @default(autoincrement())
+//   name      String
+//   student   Student?  // Assignment belongs to one student (optional)
+//   teacher   Teacher?  // Assignment belongs to one teacher (optional)
+// }
+//
+
+
+// prisma.$transaction(transactions: transactionPromise[]) :
+//   essa fn garante que todas as transactions sejam realizadas. Caso uma falhe,
+//   todas as demais transactions são revertidas

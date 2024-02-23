@@ -1,6 +1,7 @@
-# @host = http://localhost:3000
-@host = https://tree-simple-server.up.railway.app
+@host = http://localhost:3003
+# @host = https://tree-simple-server.up.railway.app
 @authToken = Bearer {{login.response.body.apiMessage.accessToken}}
+@id = 396dc9dd-9616-49e1-9dbf-28415d59d357
 
 ###
 # @name login
@@ -8,7 +9,7 @@ POST {{host}}/user/login
 Content-Type: application/json
 
 {
-  "email": "rest@client.com",
+  "email": "user-with-group2@test.com",
   "password": "123mudar"
 }
 
@@ -22,9 +23,10 @@ POST  {{host}}/user
 Content-Type: application/json
 
 {
-  "name": "rest.client.2024",
-  "email": "rest2024@client.com",
-  "password": "123mudar"
+  "name": "user-with-group-2",
+  "email": "user-with-group2@test.com",
+  "password": "123mudar",
+  "role": "student"
 }
 
 ### remove user
@@ -44,4 +46,18 @@ Authorization: {{authToken}}
 {
   "id": "9",
   "name": "user renamed by put request"
+}
+
+### get all groups
+GET {{host}}/group
+Authorization: {{authToken}}
+
+### create new group
+POST  {{host}}/group
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+ "userId": "{{id}}",
+ "name": "this is a group test 2"
 }

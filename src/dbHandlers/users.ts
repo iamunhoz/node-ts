@@ -1,15 +1,17 @@
 import { User } from "@prisma/client"
 import { dbActionTemplate } from "."
-import { prismaClient } from "../api"
-
-type DBerror = {
-  erro: string
-}
+import { DBerror, prismaClient } from "../api"
 
 export async function createUser(
   data: Omit<User, "id">
 ): Promise<User | DBerror> {
-  return dbActionTemplate(() => prismaClient.user.create({ data }))
+  return dbActionTemplate(() =>
+    prismaClient.user.create({
+      data: {
+        ...data,
+      },
+    })
+  )
 }
 
 export async function removeUser(data: {
@@ -37,7 +39,13 @@ export async function putUser(data: Partial<User>): Promise<User | DBerror> {
 }
 
 export async function getUsers(): Promise<User[] | DBerror> {
-  return dbActionTemplate(prismaClient.user.findMany)
+  return dbActionTemplate(() =>
+    prismaClient.user.findMany({
+      include: {
+        Group: true,
+      },
+    })
+  )
 }
 
 export async function getUserByEmail(data: { email: string }) {
