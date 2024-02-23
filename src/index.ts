@@ -6,6 +6,7 @@ import {
   createNewGroup,
   deleteGroupById,
   getAllGroups,
+  getGroupById,
   removeMemberFromGroup,
 } from "./requests/groups"
 import {
@@ -47,7 +48,7 @@ app.post("/user/token", refreshToken)
 app.get("/group", authenticateToken, getAllGroups)
 app.post("/group", authenticateToken, createNewGroup)
 app.delete("/group", authenticateToken, deleteGroupById)
-// app.get("/group/:id", authenticateToken, getGroupById)
+app.get("/group/id", authenticateToken, getGroupById)
 app.delete("/group/member", authenticateToken, removeMemberFromGroup)
 app.post("/group/member", authenticateToken, addMemberToGroup)
 

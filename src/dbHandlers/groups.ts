@@ -35,6 +35,18 @@ export async function removeGroup(data: {
   )
 }
 
+export async function queryGetGroupById(data: {
+  id: number
+}): Promise<Group | DBerror> {
+  return dbActionTemplate(() =>
+    prismaClient.group.findUnique({
+      where: {
+        id: data.id,
+      },
+    })
+  )
+}
+
 export async function putGroup(data: Partial<Group>): Promise<Group | DBerror> {
   const { id, ...putGroup } = data
   return dbActionTemplate(() =>
@@ -49,7 +61,7 @@ export async function putGroup(data: Partial<Group>): Promise<Group | DBerror> {
 
 export async function getGroups(): Promise<Group[] | DBerror> {
   return dbActionTemplate(() =>
-    prismaClient.group.findMany({ include: { members: {} } })
+    prismaClient.group.findMany({ include: { members: true } })
   )
 }
 

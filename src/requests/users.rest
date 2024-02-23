@@ -51,6 +51,15 @@ Authorization: {{authToken}}
 GET {{host}}/group
 Authorization: {{authToken}}
 
+### get group by id
+GET {{host}}/group/id
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "id": 2
+}
+
 ### create new group for the logged user
 POST  {{host}}/group
 Content-Type: application/json
@@ -90,3 +99,4 @@ Authorization: {{authToken}}
   "memberId": "d8b2bb3a-bb88-4ef9-97c7-b9e67c462f04"
 }
 
+### add

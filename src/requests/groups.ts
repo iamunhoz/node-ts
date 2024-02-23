@@ -5,6 +5,7 @@ import {
   createGroup,
   getGroups,
   queryAddMemberToGroup,
+  queryGetGroupById,
   queryRemoveMemberFromGroup,
   removeGroup,
 } from "../dbHandlers/groups"
@@ -27,6 +28,26 @@ export const createNewGroup: RequestHandler = async (req, res) => {
 
   // @ts-ignore (descobrir depois qual o jutsu pra tipar req.user)
   const response = await createGroup({ userId: req.user.id, name })
+
+  if ("erro" in response) {
+    res
+      .status(HttpStatusCode.BAD_REQUEST)
+      .json(failResponse({ apiBody: response.erro }))
+    return
+  }
+
+  res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
+}
+
+export const getGroupById: RequestHandler = async (req, res) => {
+  const { id } = req.body
+
+  if (!id) {
+    res.status(HttpStatusCode.BAD_REQUEST).send("missing id")
+    return
+  }
+
+  const response = await queryGetGroupById({ id })
 
   if ("erro" in response) {
     res
