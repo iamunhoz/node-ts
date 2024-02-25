@@ -33,17 +33,14 @@ model Group {
 
 
 model Sentence {
-  id      String   @id @default(uuid())
+  id      String   @id
   user    User     @relation(fields: [userId], references: [id])
   userId  String
-  // fullSentence String
-
-  //
   phrases Phrase[]
 }
 
 model Phrase {
-  id             String     @id @default(uuid())
+  id             String     @id
   // isso não vai pro db. isso é usado para gerar ts types.
   // fields deve referencia uma id desse model, e references deve referencia uma id externa (foreign)
   sentence       Sentence   @relation(fields: [sentenceId], references: [id])
@@ -51,7 +48,7 @@ model Phrase {
   sentenceId     String
   body           String
   phraseType     PhraseType
-  parentPhraseId String
+  parentId       String
   // head String?
   // leftChildPhraseId String?
   // rightChildPhraseId String?
@@ -68,44 +65,6 @@ enum PhraseType {
   AdverbP
   undefined
 }
-
-
-// schema.prisma
-
-// Define the Students table
-// model Student {
-//   id        Int      @id @default(autoincrement())
-//   name      String
-//   teachers  Teacher[] // Students can have multiple teachers
-//   groups    Group[]   // Students can belong to multiple groups
-//   assignments Assignment[] // Students can have multiple assignments
-// }
-//
-// // Define the Teachers table
-// model Teacher {
-//   id          Int         @id @default(autoincrement())
-//   name        String
-//   students    Student[]   // Teachers can have multiple students
-//   groups      Group[]     // Teachers can have multiple groups
-//   assignments Assignment[] // Teachers can have multiple assignments
-// }
-//
-// // Define the Groups table
-// model Group {
-//   id          Int        @id @default(autoincrement())
-//   name        String
-//   students    Student[]  // Groups can have multiple students
-//   teachers    Teacher[]  // Groups can have multiple teachers
-// }
-//
-// // Define the Assignments table
-// model Assignment {
-//   id        Int       @id @default(autoincrement())
-//   name      String
-//   student   Student?  // Assignment belongs to one student (optional)
-//   teacher   Teacher?  // Assignment belongs to one teacher (optional)
-// }
-//
 
 
 // prisma.$transaction(transactions: transactionPromise[]) :

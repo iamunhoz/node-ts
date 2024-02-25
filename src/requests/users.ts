@@ -28,7 +28,7 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 }
 
 export const createNewUser: RequestHandler = async (req, res) => {
-  const { name, password, email, role = "student", groupId } = req.body
+  const { name, password, email, role = "student" } = req.body
 
   if (!name || !password || !email) {
     res
@@ -44,7 +44,6 @@ export const createNewUser: RequestHandler = async (req, res) => {
     password: hashedPassword,
     email,
     role,
-    groupId,
   })
 
   handleQueryResponse(response, res)

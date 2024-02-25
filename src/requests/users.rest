@@ -8,7 +8,7 @@ POST {{host}}/user/login
 Content-Type: application/json
 
 {
-  "email": "user-with-group2@test.com",
+  "email": "user3@test.com",
   "password": "123mudar"
 }
 
@@ -99,4 +99,30 @@ Authorization: {{authToken}}
   "memberId": "49ab9b24-93f5-424f-a335-c55e4d5eb4c1"
 }
 
-### add
+### add sentence for current user
+POST {{host}}/sentence
+Authorization: {{authToken}}
+
+### get all Sentences from user
+GET {{host}}/sentence
+Authorization: {{authToken}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### DELETE ALL ROWS FROM ALL TABLES
+DELETE  {{host}}/management/purge-tables

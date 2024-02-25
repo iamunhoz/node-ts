@@ -1,6 +1,11 @@
 import cors from "cors"
 import express from "express"
 import { host } from "./consts"
+import { purgeAllTables } from "./dbHandlers"
+import {
+  createSentence,
+  getAllSentencesOfLoggedUser,
+} from "./endpoints/sentence/request-handlers"
 import {
   addMemberToGroup,
   createNewGroup,
@@ -37,9 +42,8 @@ app.put("/user/", authenticateToken, updateUser)
 app.post("/user/login", loginUser)
 app.post("/user/token", refreshToken)
 
-// sentences
-// app.get("/sentence", authenticateToken, getAllSentences)
-// app.post("/sentence", authenticateToken, postSentence)
+app.get("/sentence", authenticateToken, getAllSentencesOfLoggedUser)
+app.post("/sentence", authenticateToken, createSentence)
 // app.get("/sentence/:id", authenticateToken, getSentenceById)
 // app.delete("/sentence/:id", authenticateToken, deleteSentenceById)
 // app.put("/sentence/:id", authenticateToken, putSentenceById)
@@ -51,6 +55,8 @@ app.delete("/group", authenticateToken, deleteGroupById)
 app.get("/group/id", authenticateToken, getGroupById)
 app.delete("/group/member", authenticateToken, removeMemberFromGroup)
 app.post("/group/member", authenticateToken, addMemberToGroup)
+
+app.delete("/management/purge-tables", purgeAllTables)
 
 app.listen(host.port, host.ip, () => {
   console.log(`Server listening on port ${host.port}`)
