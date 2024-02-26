@@ -1,5 +1,5 @@
 import { RequestHandler } from "express"
-import { handleQueryResponse, validateQueryParams } from "../../api"
+import { handleQueryResponse, validateQueryParams } from "../../lib/api"
 import { queryGetSentences, queryPostSentence } from "./db-handlers"
 import { PlainSentence, plainSentence } from "./sentence-examples"
 

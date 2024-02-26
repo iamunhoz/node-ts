@@ -1,5 +1,5 @@
 import { RequestHandler } from "express"
-import { handleQueryResponse, validateQueryParams } from "../api"
+import { handleQueryResponse, validateQueryParams } from "../../lib/api"
 import {
   createGroup,
   getGroups,
@@ -7,7 +7,7 @@ import {
   queryGetGroupById,
   queryRemoveMemberFromGroup,
   removeGroup,
-} from "../dbHandlers/groups"
+} from "./db-handlers"
 
 export const getAllGroups: RequestHandler = async (req, res) => {
   const response = await getGroups()

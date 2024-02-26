@@ -7,8 +7,8 @@ import {
   handleQueryResponse,
   successResponse,
   validateQueryParams,
-} from "../api"
-import HttpStatusCode from "../consts/HttpStatusCode"
+} from "../../lib/api"
+import HttpStatusCode from "../../lib/consts/HttpStatusCode"
 import {
   checkUserCount,
   createUser,
@@ -16,7 +16,7 @@ import {
   getUsers,
   putUser,
   removeUser,
-} from "../dbHandlers"
+} from "./db-handler"
 
 // todo
 // criar user admin e rotinas relacionadas

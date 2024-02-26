@@ -1,6 +1,5 @@
 import { Group } from "@prisma/client"
-import { dbActionTemplate } from "."
-import { DBerror, prismaClient } from "../api"
+import { DBerror, dbActionTemplate, prismaClient } from "../../lib/api"
 
 export async function createGroup(dto: {
   userId: string

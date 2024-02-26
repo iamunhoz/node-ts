@@ -1,6 +1,5 @@
 import { Sentence } from "@prisma/client"
-import { DBerror, prismaClient } from "../../api"
-import { dbActionTemplate } from "../../dbHandlers"
+import { DBerror, dbActionTemplate, prismaClient } from "../../lib/api"
 import { PlainSentence } from "./sentence-examples"
 
 // TODO criar failsafe em caso as ids geradas no front já existam (mto raro)

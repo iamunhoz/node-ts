@@ -1,11 +1,8 @@
 import cors from "cors"
 import express from "express"
-import { host } from "./consts"
-import { purgeAllTables } from "./dbHandlers"
-import {
-  createSentence,
-  getAllSentencesOfLoggedUser,
-} from "./endpoints/sentence/request-handlers"
+import { purgeAllTables } from "./lib/api"
+import { host } from "./lib/consts"
+
 import {
   addMemberToGroup,
   createNewGroup,
@@ -13,7 +10,13 @@ import {
   getAllGroups,
   getGroupById,
   removeMemberFromGroup,
-} from "./requests/groups"
+} from "./endpoints/groups/request-handlers"
+
+import {
+  createSentence,
+  getAllSentencesOfLoggedUser,
+} from "./endpoints/sentence/request-handlers"
+
 import {
   authenticateToken,
   countUsers,
@@ -23,7 +26,7 @@ import {
   loginUser,
   refreshToken,
   updateUser,
-} from "./requests/users"
+} from "./endpoints/users/request-handlers"
 
 const app = express()
 app.use(express.json())
