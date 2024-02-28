@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 // users
 app.get("/user", authenticateToken, getAllUsers)
 app.get("/user/count", authenticateToken, countUsers)
-app.post("/user/", createNewUser)
+app.post("/user/signup", createNewUser)
 app.delete("/user/", authenticateToken, deleteUser) // todo - não expor diretamente
 app.put("/user/", authenticateToken, updateUser)
 app.post("/user/login", loginUser)

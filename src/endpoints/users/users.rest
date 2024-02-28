@@ -8,8 +8,8 @@ POST {{host}}/user/login
 Content-Type: application/json
 
 {
-  "email": "user3@test.com",
-  "password": "123mudar"
+  "email": "test@test.com",
+  "password": "12345"
 }
 
 ### get all users
@@ -18,13 +18,13 @@ Authorization: {{authToken}}
 
 ###
 # create new user
-POST  {{host}}/user
+POST  {{host}}/user/signup
 Content-Type: application/json
 
 {
-  "name": "user3",
-  "email": "user3@test.com",
-  "password": "123mudar",
+  "name": "test2",
+  "email": "test2@test.com",
+  "password": "12345",
   "role": "student"
 }
 

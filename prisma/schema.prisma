@@ -47,7 +47,7 @@ model Phrase {
   // isso sim é usado para gerar a foreign key constraint
   sentenceId     String
   body           String
-  phraseType     PhraseType
+  phraseType     PhraseType?
   parentId       String
   // head String?
   // leftChildPhraseId String?

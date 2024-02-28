@@ -66,13 +66,6 @@ export const deleteUser: RequestHandler = async (req, res) => {
 }
 
 export const loginUser: RequestHandler = async (req, res) => {
-  /* const { email, password } = req.body
-
-  if (!email || !password) {
-    res.status(HttpStatusCode.BAD_REQUEST).send("email or password are missing")
-    return
-  } */
-
   const { email, password } = validateQueryParams<{
     email: string
     password: string
@@ -81,7 +74,7 @@ export const loginUser: RequestHandler = async (req, res) => {
   const response = await getUserByEmail({ email })
 
   if (!response) {
-    res.status(HttpStatusCode.BAD_REQUEST).json(
+    res.status(HttpStatusCode.OK).json(
       failResponse({
         apiBody: {
           foundUser: false,

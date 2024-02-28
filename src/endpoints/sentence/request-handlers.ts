@@ -3,11 +3,11 @@ import { handleQueryResponse, validateQueryParams } from "../../lib/api"
 import { queryGetSentences, queryPostSentence } from "./db-handlers"
 import { PlainSentence, plainSentence } from "./sentence-examples"
 
-const isTest = true
+const IS_TEST = false
 
 export const createSentence: RequestHandler = async (req, res) => {
   let validatedSentence = plainSentence
-  if (!isTest) {
+  if (!IS_TEST) {
     validatedSentence = validateQueryParams<PlainSentence>(req, res, [
       "id",
       "phrases",

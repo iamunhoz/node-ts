@@ -73,7 +73,7 @@ export function handleQueryResponse<T extends Object>(
   if ("erro" in response) {
     res
       .status(HttpStatusCode.BAD_REQUEST)
-      .json(failResponse({ apiBody: response.erro }))
+      .json(failResponse({ apiBody: response }))
     return
   }
   res.status(HttpStatusCode.OK).json(successResponse({ apiBody: response }))
@@ -92,6 +92,7 @@ export async function dbActionTemplate<T>(asyncAtion: () => Promise<T>) {
 
     return {
       erro: (error as PrismaClientUnknownRequestError).message,
+      completeError: error,
     }
   } finally {
     await prismaClient.$disconnect()
