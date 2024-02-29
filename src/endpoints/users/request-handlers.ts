@@ -139,10 +139,10 @@ export function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization
   const token = authHeader?.split(" ")[1]
 
-  if (!token) return res.sendStatus(401)
+  if (!token) return res.sendStatus(HttpStatusCode.FORBIDDEN)
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403)
+    if (err) return res.sendStatus(HttpStatusCode.UNAUTHORIZED).json(err)
 
     req.user = user
     next()
@@ -154,15 +154,15 @@ const refreshTokens = []
 export const refreshToken: RequestHandler = (req, res) => {
   const refreshToken = req.body.token
 
-  if (!refreshToken) return res.sendStatus(HttpStatusCode.UNAUTHORIZED)
+  if (!refreshToken) return res.sendStatus(HttpStatusCode.FORBIDDEN)
   if (!refreshTokens.includes(refreshToken))
-    return res.sendStatus(HttpStatusCode.FORBIDDEN)
+    return res.sendStatus(HttpStatusCode.UNAUTHORIZED)
 
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     (err, user: User) => {
-      if (err) return res.sendStatus(HttpStatusCode.FORBIDDEN)
+      if (err) return res.sendStatus(HttpStatusCode.UNAUTHORIZED)
 
       const accessToken = generateAccessToken(user)
 

@@ -6,12 +6,12 @@ import { PlainSentence, plainSentence } from "./sentence-examples"
 const IS_TEST = false
 
 export const createSentence: RequestHandler = async (req, res) => {
-  let validatedSentence = plainSentence
-  if (!IS_TEST) {
-    validatedSentence = validateQueryParams<PlainSentence>(req, res, [
-      "id",
-      "phrases",
-    ])
+  let validatedSentence = validateQueryParams<PlainSentence>(req, res, [
+    "id",
+    "phrases",
+  ])
+  if (IS_TEST) {
+    validatedSentence = plainSentence
   }
 
   const response = await queryPostSentence({

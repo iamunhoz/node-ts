@@ -58,11 +58,17 @@ model Phrase {
 enum PhraseType {
   Sentence
   NounP
+  Noun
   VerbP
+  Verb
   AdjectiveP
+  Adjective
   PrepositionP
+  Preposition
   DeterminerP
+  Determiner
   AdverbP
+  Adverb
   undefined
 }
 
